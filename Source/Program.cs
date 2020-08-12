@@ -22,8 +22,16 @@ namespace Unary.CSGOBot
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
 
+        // Shift
+        // Home
+        // Ctrl
+        // X
+        // Enter
+        // V
+
         static void Main(string[] args)
         {
+            /*
             Console.WriteLine("Choose the output device: ");
 
             for (int n = 0; n < WaveOut.DeviceCount; n++)
@@ -45,9 +53,34 @@ namespace Unary.CSGOBot
                     Thread.Sleep(1000);
                 }
             }
+            */
+
+            
+            InputSimulator Test = new InputSimulator();
+            Thread.Sleep(3000);
+
+            Process p = Process.GetProcessesByName("csgo").FirstOrDefault();
+            IntPtr CSGOWindow = p.MainWindowHandle;
+
+            bool ChatOpen = false;
+
+            while(true)
+            {
+                if(ChatOpen && (Test.InputDeviceState.IsKeyDown(VirtualKeyCode.ESCAPE) 
+                || Test.InputDeviceState.IsKeyDown(VirtualKeyCode.RETURN)) && CSGOWindow == GetForegroundWindow())
+                {
+                    ChatOpen = false;
+                }
+                else if(Test.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_Y) && CSGOWindow == GetForegroundWindow())
+                {
+                    ChatOpen = true;
+                }
+
+                Console.WriteLine("ChatOpen: " + ChatOpen);
+            }
+            
 
             /*
-
             Process p = Process.GetProcessesByName("csgo").FirstOrDefault();
             if (p != null)
             {
@@ -63,7 +96,6 @@ namespace Unary.CSGOBot
                 
                 SetForegroundWindow(OriginalWindow);
             }
-
             */
         }
     }
