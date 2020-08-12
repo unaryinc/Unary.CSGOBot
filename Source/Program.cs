@@ -14,6 +14,47 @@ using NAudio.Wave;
 
 namespace Unary.CSGOBot
 {
+    enum GameState : byte
+    {
+        Clear,
+        Chat,
+        Menu,
+    }
+
+    class ButtonChecker
+    {
+        private bool Pressed = false;
+        private Func<bool> IsPressed = null;
+
+        public ButtonChecker(Func<bool> NewIsPressed)
+        {
+            IsPressed = NewIsPressed;
+        }
+
+        public bool IsUnpressed()
+        {
+            if (IsPressed())
+            {
+                if(!Pressed)
+                {
+                    Pressed = true;
+                }
+
+                return false;
+            }
+            else
+            {
+                if(Pressed)
+                {
+                    Pressed = false;
+                    return true;
+                }
+
+                return false;
+            }
+        }
+    }
+
     class Program
     {
         [DllImport("user32.dll")]
@@ -21,13 +62,6 @@ namespace Unary.CSGOBot
 
         [DllImport("user32.dll")]
         static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        // Shift
-        // Home
-        // Ctrl
-        // X
-        // Enter
-        // V
 
         static void Main(string[] args)
         {
@@ -55,31 +89,53 @@ namespace Unary.CSGOBot
             }
             */
 
-            
             InputSimulator Test = new InputSimulator();
             Thread.Sleep(3000);
 
             Process p = Process.GetProcessesByName("csgo").FirstOrDefault();
             IntPtr CSGOWindow = p.MainWindowHandle;
 
-            bool ChatOpen = false;
+            GameState CurrentState = GameState.Clear;
 
-            while(true)
+            ButtonChecker EscapeButton = new ButtonChecker(() => { return Test.InputDeviceState.IsKeyDown(VirtualKeyCode.ESCAPE); });
+            ButtonChecker YButton = new ButtonChecker(() => { return Test.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_Y); });
+            ButtonChecker ReturnButton = new ButtonChecker(() => { return Test.InputDeviceState.IsKeyDown(VirtualKeyCode.RETURN); });
+
+            while (true)
             {
-                if(ChatOpen && (Test.InputDeviceState.IsKeyDown(VirtualKeyCode.ESCAPE) 
-                || Test.InputDeviceState.IsKeyDown(VirtualKeyCode.RETURN)) && CSGOWindow == GetForegroundWindow())
+                if(EscapeButton.IsUnpressed())
                 {
-                    ChatOpen = false;
+                    if(CSGOWindow == GetForegroundWindow())
+                    {
+                        if (CurrentState == GameState.Chat || CurrentState == GameState.Menu)
+                        {
+                            CurrentState = GameState.Clear;
+                        }
+                        else
+                        {
+                            CurrentState = GameState.Menu;
+                        }
+                    }
                 }
-                else if(Test.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_Y) && CSGOWindow == GetForegroundWindow())
+                else if(YButton.IsUnpressed())
                 {
-                    ChatOpen = true;
+                    if (CSGOWindow == GetForegroundWindow() && CurrentState == GameState.Clear)
+                    {
+                        CurrentState = GameState.Chat;
+                    }
+                }
+                else if(ReturnButton.IsUnpressed())
+                {
+                    if (CSGOWindow == GetForegroundWindow() && CurrentState == GameState.Chat)
+                    {
+                        CurrentState = GameState.Clear;
+                    }
                 }
 
-                Console.WriteLine("ChatOpen: " + ChatOpen);
+                Console.WriteLine("CurrentState: " + CurrentState);
             }
             
-
+            
             /*
             Process p = Process.GetProcessesByName("csgo").FirstOrDefault();
             if (p != null)
