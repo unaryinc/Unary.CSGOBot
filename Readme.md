@@ -18,7 +18,7 @@ External chat bot for CSGO with a lot of cool commands to pass time while you or
     - `Healthshot`/`X` - `O`
     - `Enter` - Should not be bound
     - `V` - Should not be bound
-* Type `bind f7 botexec` into the console
+* Type `bind f7 "exec botexec"` into the console
 * Download one of the latest releases [from here](https://github.com/unaryinc/Unary.CSGOBot/releases/latest)
 * Unpack `.zip` somewhere
 * Follow the installation steps provided by the app
