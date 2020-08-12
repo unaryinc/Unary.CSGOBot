@@ -9,7 +9,20 @@ External chat bot for CSGO with a lot of cool commands to pass time while you or
 
 ## Installation
 
+* Close the game if you still have it running
+* Add `-condebug` to your launch options of CSGO
+* Open the game, and remove/rebind these keys:
+    - `Walk`/`Shift` - `Alt`
+    - `Radio message`/`Ctrl` bind - Should not be bound
+    - `Home` - Should not be bound
+    - `Healthshot`/`X` - `O`
+    - `Enter` - Should not be bound
+    - `V` - Should not be bound
 * Download one of the latest releases [from here](https://github.com/unaryinc/Unary.CSGOBot/releases/latest)
+* Unpack `.zip` somewhere
+* Follow the installation steps provided by the app
+
+After the installation, boot up the game, join the server, and then type `/start` in the chat.
 
 ## Will I get banned
 
