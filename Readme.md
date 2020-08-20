@@ -32,7 +32,7 @@ In order to stop the bot type `/stop` in the chat, `bot_stop` in console, or clo
 
 ## Will I get banned
 
-* Short answer - `It is impossible for you to get banned from this bot`
+* Short answer - `It is impossible to get banned`
 
 Long, more technical answer:
 
