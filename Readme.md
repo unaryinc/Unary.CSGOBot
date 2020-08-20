@@ -12,9 +12,11 @@ External chat bot for CSGO with a lot of cool commands to pass time while you or
 
 * Close the game if you still have it running
 * Add `-condebug` to your launch options of CSGO
+* Launch the game
 * Type `bind f7 "exec botexec"` into the console
 * Download one of the latest releases [from here](https://github.com/unaryinc/Unary.CSGOBot/releases/latest)
 * Unpack `.zip` somewhere
+* Join in the match
 * Follow the installation steps provided by the app
 
 ### ! THERE ARE TWO MAJOR THINGS THAT YOU NEED TO KEEP IN MIND WHILE RUNNING THIS BOT !
