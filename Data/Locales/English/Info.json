@@ -1,0 +1,11 @@
+{
+	"Welcome": "Welcome to Unary.CSGOBot {0}",
+	"FirstTime": "Because you never launched this app prevously, we would need you to fill in a few stuff",
+	"SelectLanguage": "Please select a language from list below",
+	"ProvideCSGOPath": "Please select the csgo.exe",
+	"ProvideSteamID": "Please copy-paste a SteamID of your Steam account and then press Enter",
+	"SteamIDExample": "SteamID should look something like this: STEAM_X:X:XXXXXXXXX",
+	"SteamIDSite": "You can check your SteamID on a site like https://steamid.io/",
+	"OtherSettings": "Every other togglable setting is accessable at Data/Config.json",
+	"Ready": "Now you can join the match, then press the start button in order to use this bot"
+}

@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>.</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>.</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -42,8 +42,13 @@
     <Reference Include="NAudio">
       <HintPath>.\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,16 +56,40 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsInput">
-      <HintPath>.\WindowsInput.dll</HintPath>
+    <Reference Include="Unary.IOManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Unary.IOManager.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Program.cs" />
+    <Compile Include="Source\Abstract\ISystem.cs" />
+    <Compile Include="Source\Entry.cs" />
     <Compile Include="Source\AssemblyInfo.cs" />
+    <Compile Include="Source\Structs\Subscriber.cs" />
+    <Compile Include="Source\Systems\SAssembly.cs" />
+    <Compile Include="Source\Systems\Console.cs" />
+    <Compile Include="Source\Systems\Events.cs" />
+    <Compile Include="Source\Systems\SCFG.cs" />
+    <Compile Include="Source\Systems\SCommands.cs" />
+    <Compile Include="Source\Systems\SConfig.cs" />
+    <Compile Include="Source\Systems\SData.cs" />
+    <Compile Include="Source\Systems\SGameState.cs" />
+    <Compile Include="Source\Systems\SIO.cs" />
+    <Compile Include="Source\Systems\SKills.cs" />
+    <Compile Include="Source\Systems\SLocale.cs" />
+    <Compile Include="Source\Systems\SLog.cs" />
+    <Compile Include="Source\Systems\SPlayers.cs" />
+    <Compile Include="Source\Systems\SServerType.cs" />
+    <Compile Include="Source\Systems\SSetup.cs" />
+    <Compile Include="Source\Systems\SVoiceChat.cs" />
+    <Compile Include="Source\Systems\Sys.cs" />
+    <Compile Include="Source\Utils\UAssembly.cs" />
+    <Compile Include="Source\Utils\UPluginID.cs" />
+    <Compile Include="Source\Utils\UString.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

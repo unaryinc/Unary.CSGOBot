@@ -1,3 +1,6 @@
 .vs/
-bin/
 obj/
+Unary.CSGOBot.exe
+Unary.CSGOBot.pdb
+Unary.IOManager.dll
+Unary.IOManager.pdb
