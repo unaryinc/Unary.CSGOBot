@@ -22,28 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Unary.CSGOBot.Abstract
+namespace Unary.CSGOBot.Structs
 {
-    public class ISystem
+    public struct Command
     {
-        public virtual void Init()
-        {
-
-        }
-
-        public virtual void PostInit()
-        {
-
-        }
-
-        public virtual void Clear()
-        {
-
-        }
-
-        public virtual void Poll()
-        {
-
-        }
+        public string Username;
+        public string SteamID;
+        public string Text;
+        public bool ByBot;
+        public bool ByUs;
     }
 }

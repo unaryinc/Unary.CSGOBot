@@ -22,28 +22,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-namespace Unary.CSGOBot.Abstract
+using System;
+using System.Security.Cryptography;
+using Unary.CSGOBot.Abstract;
+
+namespace Unary.CSGOBot.Systems
 {
-    public class ISystem
+    public class SRNG : ISystem
     {
-        public virtual void Init()
-        {
+        private RNGCryptoServiceProvider RNG;
+        private byte[] Buffer;
 
+        public override void Init()
+        {
+            RNG = new RNGCryptoServiceProvider();
+            Buffer = new byte[4];
         }
 
-        public virtual void PostInit()
+        public int Next(int Min, int Max)
         {
+            Max++;
+            long Delta = Max - Min;
+            while (true)
+            {
+                RNG.GetBytes(Buffer);
+                uint rand = BitConverter.ToUInt32(Buffer, 0);
 
-        }
-
-        public virtual void Clear()
-        {
-
-        }
-
-        public virtual void Poll()
-        {
-
+                long NewMax = (1 + (long)uint.MaxValue);
+                long Remainder = NewMax % Delta;
+                if (rand < NewMax - Remainder)
+                {
+                    return (int)(Min + (rand % Delta));
+                }
+            }
         }
     }
 }

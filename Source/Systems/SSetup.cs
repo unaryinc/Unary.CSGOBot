@@ -1,5 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+MIT License
+
+Copyright (c) 2020 Unary Incorporated
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+using System;
 
 using Unary.CSGOBot.Abstract;
 using System.Windows.Forms;
@@ -7,7 +30,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 using Unary.CSGOBot.Utils;
-using System.Runtime.CompilerServices;
 
 namespace Unary.CSGOBot.Systems
 {
@@ -15,13 +37,11 @@ namespace Unary.CSGOBot.Systems
     {
         SLocale Locale;
         SConfig Config;
-        SIO IO;
 
         public override void Init()
         {
             Locale = Sys.Ref.Get<SLocale>();
             Config = Sys.Ref.Get<SConfig>();
-            IO = Sys.Ref.Get<SIO>();
 
             Sys.Ref.Console.Message(string.Format(Locale.Get("Welcome"), Sys.Ref.Version));
 
@@ -29,13 +49,13 @@ namespace Unary.CSGOBot.Systems
 
             Sys.Ref.Console.Message(Locale.Get("FirstTime"));
 
+            Commands();
             Language();
             GamePath();
             SteamID();
 
             Config.Set("UseVoiceChat", false);
-            Config.Set("ChatDelay", (long)1200);
-            Config.Set("LogDelay", (long)1000);
+            Config.Set("IODelay", (long)1200);
             Config.Set("PollDelay", 34);
 
             Sys.Ref.Console.Message(Locale.Get("OtherSettings"));
@@ -43,11 +63,29 @@ namespace Unary.CSGOBot.Systems
             Sys.Ref.Console.Message(Locale.Get("Ready"));
         }
 
+        private void Commands()
+        {
+            Sys.Ref.Console.Message(Locale.Get("CloseCSGO"));
+            Sys.Ref.Console.Message(Locale.Get("PressEnter"));
+            System.Console.ReadKey();
+            Sys.Ref.Console.Message(Locale.Get("AddOption"));
+            Sys.Ref.Console.Message(Locale.Get("OptionPath"));
+            Sys.Ref.Console.Message(Locale.Get("PressEnter"));
+            System.Console.ReadKey();
+            Sys.Ref.Console.Message(Locale.Get("LaunchGame"));
+            Sys.Ref.Console.Message(Locale.Get("PressEnter"));
+            System.Console.ReadKey();
+            Sys.Ref.Console.Message(Locale.Get("AddBind"));
+            Sys.Ref.Console.Message(Locale.Get("PressEnter"));
+            System.Console.ReadKey();
+        }
+
         private void Language()
         {
             while (true)
             {
                 Sys.Ref.Console.Message(Locale.Get("SelectLanguage"));
+                Sys.Ref.Console.Message(Locale.Get("LanguageWarn"));
 
                 for (int i = 0; i < Locale.AvailableLocales.Count; ++i)
                 {
@@ -63,6 +101,7 @@ namespace Unary.CSGOBot.Systems
                         int SelectedIndex = int.Parse(SelectedLocale) - 1;
                         if (SelectedIndex >= 0 && SelectedIndex < Locale.AvailableLocales.Count)
                         {
+                            Sys.Ref.Console.Message(string.Format(Locale.Get("SelectedLaungage"), Locale.AvailableLocales[SelectedIndex]));
                             Locale.SetLocale(Locale.AvailableLocales[SelectedIndex], "English");
                             Config.Set("TargetLocale", Locale.AvailableLocales[SelectedIndex]);
                             Config.Set("FallbackLocale", "English");
@@ -75,16 +114,8 @@ namespace Unary.CSGOBot.Systems
                         HappyCompiler.GetHashCode();
                     }
                 }
-                else
-                {
-                    if (Locale.AvailableLocales.Contains(SelectedLocale))
-                    {
-                        Locale.SetLocale(SelectedLocale, "English");
-                        Config.Set("TargetLocale", SelectedLocale);
-                        Config.Set("FallbackLocale", "English");
-                        break;
-                    }
-                }
+
+                Sys.Ref.Console.Error(string.Format(Locale.Get("FailedLanguage"), SelectedLocale));
             }
         }
 
@@ -108,10 +139,13 @@ namespace Unary.CSGOBot.Systems
                 {
                     if (Path.GetFileNameWithoutExtension(Directory.GetParent(CSGOPath.FileName).FullName) == "Counter-Strike Global Offensive")
                     {
+                        Sys.Ref.Console.Message(string.Format(Locale.Get("ProvidedCSGOPath"), CSGOPath.FileName));
                         Config.Set("CSGOPath", CSGOPath.FileName);
                         break;
                     }
                 }
+
+                Sys.Ref.Console.Error(Locale.Get("InvalidCSGOPath"));
             }
         }
 
@@ -137,6 +171,8 @@ namespace Unary.CSGOBot.Systems
                     Config.Set("SteamID", SteamID.Replace("STEAM_0", "STEAM_1"));
                     break;
                 }
+
+                Sys.Ref.Console.Error(string.Format(Locale.Get("InvalidSteamID"), SteamID));
             }
         }
 

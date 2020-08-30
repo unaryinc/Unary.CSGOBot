@@ -22,13 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 using Unary.CSGOBot.Abstract;
 using Unary.CSGOBot.Utils;
@@ -37,7 +32,7 @@ namespace Unary.CSGOBot.Systems
 {
     class Sys
     {
-        public string Version = "0.0.1";
+        public string Version = "0.1.0";
 
         public static Sys Ref { get; private set; }
         public static bool Running { get; set; } = true;
@@ -113,18 +108,24 @@ namespace Unary.CSGOBot.Systems
         public void Run()
         {
             Add(new SIO());
+            Add(new SRNG());
             Add(new SData());
             Add(new SLocale());
+            Add(new SAssembly());
             Add(new SConfig());
             Add(new SSetup());
             Add(new SLog());
             Add(new SGameState());
             Add(new SServerType());
-            Add(new SAssembly());
             Add(new SCFG());
             Add(new SPlayers());
-            Add(new SKills());
+            Add(new SChat());
+            Add(new SCommands());
             Add(new SVoiceChat());
+
+            // Command systems
+            Add(new SMainCommands());
+            Add(new SRPS());
 
             PostInit();
 

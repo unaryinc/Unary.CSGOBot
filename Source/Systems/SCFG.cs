@@ -1,12 +1,33 @@
-﻿using System;
+﻿/*
+MIT License
+
+Copyright (c) 2020 Unary Incorporated
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
+using System.IO;
 
 using Unary.CSGOBot.Abstract;
-using System.IO;
 using Unary.IOManager.Native;
 
 namespace Unary.CSGOBot.Systems
@@ -16,7 +37,7 @@ namespace Unary.CSGOBot.Systems
         private SGameState GameState;
         private Stopwatch Timer;
         private long Timeout;
-
+        public bool Prolong = false;
         private string Path;
 
         private Queue<string> ChatMessages;
@@ -26,12 +47,13 @@ namespace Unary.CSGOBot.Systems
         {
             GameState = Sys.Ref.Get<SGameState>();
             Timer = new Stopwatch();
-            Timeout = Sys.Ref.Get<SConfig>().Get<long>("ChatDelay");
+            Timeout = Sys.Ref.Get<SConfig>().Get<long>("IODelay");
 
             Path = Directory.GetParent(Sys.Ref.Get<SConfig>().Get<string>("CSGOPath")).FullName + "/csgo/cfg/botexec.cfg";
 
             ChatMessages = new Queue<string>();
             Commands = new List<string>();
+            // Syncing timers to be in order
             Timer.Start();
         }
 
@@ -42,13 +64,13 @@ namespace Unary.CSGOBot.Systems
 
         public void MessageAll(string Message)
         {
-            ChatMessages.Enqueue("say " + Message);
+            ChatMessages.Enqueue("say \u200B" + Message);
             Sys.Ref.Console.Message("[SAY] " + Message);
         }
 
         public void MessageTeam(string Message)
         {
-            ChatMessages.Enqueue("say_team " + Message);
+            ChatMessages.Enqueue("say_team \u200B" + Message);
             Sys.Ref.Console.Message("[SAY_TEAM] " + Message);
         }
 
@@ -61,6 +83,13 @@ namespace Unary.CSGOBot.Systems
         {
             if (Timer.ElapsedMilliseconds >= Timeout && GameState.State == SGameState.GameState.InGame)
             {
+                if(Prolong)
+                {
+                    Prolong = false;
+                    Timer.Restart();
+                    return;
+                }
+
                 string NewCFG = default;
 
                 if(ChatMessages.Count != 0)
@@ -75,9 +104,11 @@ namespace Unary.CSGOBot.Systems
 
                 Commands.Clear();
 
-                File.WriteAllText(Path, NewCFG);
-
-                Sys.Ref.Get<SIO>().IO.Keyboard.KeyPress(VirtualKeyCode.F7);
+                if(NewCFG != default)
+                {
+                    File.WriteAllText(Path, NewCFG);
+                    Sys.Ref.Get<SIO>().IO.Keyboard.KeyPress(VirtualKeyCode.F7);
+                }
 
                 Timer.Restart();
             }

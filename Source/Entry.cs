@@ -39,6 +39,7 @@ namespace Unary.CSGOBot
             {
                 
             }
+            NewSys.Clear();
         }
     }
 }

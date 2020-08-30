@@ -1,0 +1,9 @@
+{
+	"RPS.Won": "{0} won!",
+	"RPS.Draw": "Draw!",
+	"RPS.Picked": "{0} picked {1}",
+	"RPS.Rock": "Rock",
+	"RPS.Paper": "Paper",
+	"RPS.Scissors": "Scissors"
+}
+	

@@ -1,10 +1,29 @@
-﻿using System;
+﻿/*
+MIT License
+
+Copyright (c) 2020 Unary Incorporated
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Unary.CSGOBot.Abstract;
 
 namespace Unary.CSGOBot.Systems
@@ -20,9 +39,7 @@ namespace Unary.CSGOBot.Systems
         Dictionary<string, string> SteamIDToNames;
         Dictionary<string, string> NamesToSteamID;
         Regex PlayerInfo;
-        Regex ChatMessage;
         Regex Type;
-        private bool FirstInit = true;
 
         public override void Init()
         {
@@ -30,20 +47,17 @@ namespace Unary.CSGOBot.Systems
             ServerType = Sys.Ref.Get<SServerType>();
             OurSteamID = Sys.Ref.Get<SConfig>().Get<string>("SteamID");
             OurName = default;
+
             SteamIDToNames = new Dictionary<string, string>();
             NamesToSteamID = new Dictionary<string, string>();
+            
             PlayerInfo = new Regex("^#.*? \"(.*?)\" (.*?) (.*?)$");
-            ChatMessage = new Regex(@"^(.*?)\u200E : (.*?)$");
             Type = new Regex("^type    :  (.*?)$");
 
             Sys.Ref.Get<SLog>().Subscribe("ParsedStatus", SLog.LogSubscriberType.Range,
             "^hostname: (.*?)$", "#end");
 
-            Sys.Ref.Get<SLog>().Subscribe("ParsedChatMessage", SLog.LogSubscriberType.Single,
-            "^(.*?)\u200E : (.*?)$");
-
             Sys.Ref.Events.Subscribe("ParsedStatus", nameof(OnParsedStatus), this);
-            Sys.Ref.Events.Subscribe("ParsedChatMessage", nameof(OnChatMessage), this);
         }
 
         public void OnParsedStatus(List<string> Messages)
@@ -68,6 +82,8 @@ namespace Unary.CSGOBot.Systems
                 if(SteamID == OurSteamID)
                 {
                     OurName = Name;
+                    SteamIDToNames[SteamID] = Name;
+                    NamesToSteamID[Name] = SteamID;
                     Sys.Ref.Get<SCFG>().MessageAll("Found our nickname: " + OurName);
                     Sys.Ref.Get<SCFG>().MessageAll("Successfully initialized all of the stuff.");
                 }
@@ -80,36 +96,6 @@ namespace Unary.CSGOBot.Systems
 
             //Sys.Ref.Events.Invoke("OnPlayersUpdate");
             ServerType.SetType(SServerType.ServerType.Official);
-        }
-
-        public void OnChatMessage(string Message)
-        {
-            Match NewMatch = ChatMessage.Match(Message);
-            string Username = NewMatch.Groups[1].Value;
-            string Text = NewMatch.Groups[2].Value;
-
-            if(Text == "/start" && FirstInit)
-            {
-                FirstInit = false;
-                GameState.SetState(SGameState.GameState.InGame);
-                Sys.Ref.Console.Message("Got start!");
-                Sys.Ref.Get<SCFG>().Command("status");
-            }
-            else if(Text == "/stop" && Username == OurName)
-            {
-                Sys.Running = false;
-            }
-            else if(Text == "/list")
-            {
-                string Result = default;
-                foreach(var Player in NamesToSteamID)
-                {
-                    Result += Player.Key + ", ";
-                }
-
-                Result = Result.Substring(0, Result.Length - 2);
-                Sys.Ref.Get<SCFG>().MessageAll(Result);
-            }
         }
 
         public override void PostInit()
@@ -130,7 +116,6 @@ namespace Unary.CSGOBot.Systems
             }
             else
             {
-                Sys.Ref.Console.Error("Tried getting non existing user with SteamID " + SteamID);
                 return default;
             }
         }
@@ -143,7 +128,6 @@ namespace Unary.CSGOBot.Systems
             }
             else
             {
-                Sys.Ref.Console.Error("Tried getting non existing user with name " + Name);
                 return default;
             }
         }

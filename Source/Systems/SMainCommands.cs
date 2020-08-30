@@ -22,44 +22,51 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-using System;
-using System.Collections.Generic;
+using Unary.CSGOBot.Abstract;
+using Unary.CSGOBot.Structs;
 
 namespace Unary.CSGOBot.Systems
 {
-    public class Events
+    public class SMainCommands : ISystem
     {
-        private Dictionary<string, List<Tuple<string, object>>> Subscribers;
+        private bool FirstInit = true;
 
-        public Events()
+        public override void Init()
         {
-            Subscribers = new Dictionary<string, List<Tuple<string, object>>>();
+            Sys.Ref.Get<SCommands>().Add("start");
+            Sys.Ref.Get<SCommands>().Subscribe("start", nameof(OnStart), this);
+            Sys.Ref.Get<SCommands>().Add("stop");
+            Sys.Ref.Get<SCommands>().Subscribe("stop", nameof(OnStop), this);
+            Sys.Ref.Get<SLog>().Subscribe("ParseStopBot", SLog.LogSubscriberType.Single, "^" + Sys.Ref.Get<SLocale>().Get("InvalidCommand") + "stop_bot$");
+            Sys.Ref.Events.Subscribe("ParseStopBot", nameof(OnStopConsole), this);
         }
 
-        public void Invoke(string Event, params object[] Args)
+        public override void Clear()
         {
-            if(Subscribers.ContainsKey(Event))
+            
+        }
+
+        public void OnStart(Message NewMessage)
+        {
+            if(FirstInit)
             {
-                foreach(var Subscriber in Subscribers[Event])
-                {
-                    var Method = Subscriber.Item2.GetType().GetMethod(Subscriber.Item1);
-                    Method.Invoke(Subscriber.Item2, Args);
-                }
-            }
-            else
-            {
-                Sys.Ref.Console.Error("Tried to invoke an event with no subscribers");
+                FirstInit = false;
+                Sys.Ref.Get<SGameState>().SetState(SGameState.GameState.InGame);
+                Sys.Ref.Get<SCFG>().Command("status");
             }
         }
 
-        public void Subscribe(string EventName, string MethodName, object Target)
+        public void OnStopConsole(string Message)
         {
-            if(!Subscribers.ContainsKey(EventName))
-            {
-                Subscribers[EventName] = new List<Tuple<string, object>>();
-            }
+            Sys.Running = false;
+        }
 
-            Subscribers[EventName].Add(new Tuple<string, object>(MethodName, Target));
+        public void OnStop(Message NewMessage)
+        {
+            if(NewMessage.ByUs)
+            {
+                Sys.Running = false;
+            }
         }
     }
 }

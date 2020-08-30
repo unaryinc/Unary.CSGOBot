@@ -1,11 +1,23 @@
 {
 	"Welcome": "Welcome to Unary.CSGOBot {0}",
 	"FirstTime": "Because you never launched this app prevously, we would need you to fill in a few stuff",
+	"PressEnter": "Press ENTER to continue",
+	"CloseCSGO": "Please, close CSGO if you still have it running",
+	"AddOption": "Now you need to add '-condebug' to your launch options",
+	"OptionPath": "In order to access launch options you need to right click on CSGO in your Steam library, then go to Properties > Launch options",
+	"LaunchGame": "Now we need to launch CSGO",
+	"AddBind": "Open console with ~ and type 'bind f7 \"exec botexec\"' (you may add this bind in autoexec.cfg if you want)",
 	"SelectLanguage": "Please select a language from list below",
+	"LanguageWarn": " ! WARNING ! Selected language needs to be the same your game's language",
+	"SelectedLaungage": "Selected {0} as a target language",
+	"FailedLanguage": "Failed to use {0} as a chosen language",
 	"ProvideCSGOPath": "Please select the csgo.exe",
+	"ProvidedCSGOPath": "Selecting {0} as a csgo.exe path",
+	"InvalidCSGOPath": "Invalid csgo.exe path",
 	"ProvideSteamID": "Please copy-paste a SteamID of your Steam account and then press Enter",
 	"SteamIDExample": "SteamID should look something like this: STEAM_X:X:XXXXXXXXX",
 	"SteamIDSite": "You can check your SteamID on a site like https://steamid.io/",
+	"InvalidSteamID": "{0} is an invalid SteamID and could not be used",
 	"OtherSettings": "Every other togglable setting is accessable at Data/Config.json",
-	"Ready": "Now you can join the match, then press the start button in order to use this bot"
+	"Ready": "Now you can join the match and type '/start' in chat to begin and then '/stop' in chat or 'stop_bot' in console to stop"
 }

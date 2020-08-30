@@ -1,0 +1,30 @@
+{
+  "TargetLocale": {
+    "Type": "System.String",
+    "Value": "English"
+  },
+  "FallbackLocale": {
+    "Type": "System.String",
+    "Value": "English"
+  },
+  "CSGOPath": {
+    "Type": "System.String",
+    "Value": "Z:\\Steam\\steamapps\\common\\Counter-Strike Global Offensive\\csgo.exe"
+  },
+  "SteamID": {
+    "Type": "System.String",
+    "Value": "STEAM_1:0:501393606"
+  },
+  "UseVoiceChat": {
+    "Type": "System.Boolean",
+    "Value": false
+  },
+  "IODelay": {
+    "Type": "System.Int64",
+    "Value": 1200
+  },
+  "PollDelay": {
+    "Type": "System.Int32",
+    "Value": 34
+  }
+}
