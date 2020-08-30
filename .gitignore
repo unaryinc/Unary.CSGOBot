@@ -1,5 +1,6 @@
 .vs/
 obj/
+Data/Config.json
 Unary.CSGOBot.exe
 Unary.CSGOBot.pdb
 Unary.IOManager.dll
