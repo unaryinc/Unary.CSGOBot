@@ -6,6 +6,7 @@ External chat bot for CSGO with a lot of cool commands to pass time while you or
     - [Installation](#installation)
     - [Will I get banned](#will-i-get-banned)
     - [Bot is not typing anything](#bot-is-not-typing-anything)
+    - [Logo](#logo)
     - [Thirdparty software](#thirdparty-software)
 
 ## Installation
@@ -31,7 +32,16 @@ When bot needs to focus on CSGO - it asks OS to make CSGO window active. When bo
 You might think that emulation of making CS window active or keypresses might be a reason that `VAC` will detect those actions, but that would mean that every other keypress emulators (things like auto clickers, AutoHotKey, etc) would be also banned, but they are not.
 
 ## Bot is not typing anything
-Bot cant emulate binds while you are in pause menu/chat. In order to resume bot output, you need to close them, and be in game without anything additional opened on your screen (scoreboard does not count).
+Bot cant emulate binds while you are in pause menu/chat. In order to resume bot output, you need to close them, and be in game without anything additional opened on your screen (scoreboard/buy menu does not count).
+
+## Logo
+
+### 2691x2691
+![2691x2691](https://raw.githubusercontent.com/unaryinc/Unary.CSGOBot/master/Images/2691.png)
+### 1024x1024
+![1024x1024](https://raw.githubusercontent.com/unaryinc/Unary.CSGOBot/master/Images/1024.png)
+### 184x184
+![184x184](https://raw.githubusercontent.com/unaryinc/Unary.CSGOBot/master/Images/184.png)
 
 ## Thirdparty software:
 https://www.vb-audio.com/Cable/
