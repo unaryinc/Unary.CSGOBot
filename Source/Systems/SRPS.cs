@@ -113,7 +113,7 @@ namespace Unary.CSGOBot.Systems
             {
                 Second = NewMessage.Username;
                 SecondPick = ListOfTypes[RNG.Next(0, ListOfTypes.Count - 1)];
-                Sys.Ref.Get<SCFG>().MessageAll(string.Format(Locale.Get("RPS.Picked"), First, Locale.Get(TypeToLocale[SecondPick])));
+                Sys.Ref.Get<SCFG>().MessageAll(string.Format(Locale.Get("RPS.Picked"), Second, Locale.Get(TypeToLocale[SecondPick])));
 
                 if(FirstPick == SecondPick)
                 {
