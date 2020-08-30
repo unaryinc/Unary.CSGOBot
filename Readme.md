@@ -10,25 +10,13 @@ External chat bot for CSGO with a lot of cool commands to pass time while you or
 
 ## Installation
 
-* Close the game if you still have it running
-* Add `-condebug` to your launch options of CSGO
-* Launch the game
-* Type `bind f7 "exec botexec"` into the console
 * Download one of the latest releases [from here](https://github.com/unaryinc/Unary.CSGOBot/releases/latest)
 * Unpack `.zip` somewhere
-* Join in the match
+* Launch `Unary.CSGOBot.exe`
 * Follow the installation steps provided by the app
 
-### ! THERE ARE TWO MAJOR THINGS THAT YOU NEED TO KEEP IN MIND WHILE RUNNING THIS BOT !
-### In order to close the pause menu (Accessed by `ESC`) you need to press `ESC` again. Do not use the `RESUME GAME` button as it would break state handling logic!
-![Resume Button](https://raw.githubusercontent.com/unaryinc/Unary.CSGOBot/master/Images/ResumeButton.png)
-### In order to close the chat window you need to press `ESC` or send your message with the `ENTER` key. Do not use the `SEND` button or `Right mouse button` to close the chat window as it would break state handling logic!
-![Send Button](https://raw.githubusercontent.com/unaryinc/Unary.CSGOBot/master/Images/SendButton.png)
-
-We are sorry for the inconvenience, but since this is a fully external bot we cant reliably check for specific things like in-game button presses.
-
 After the installation, boot up the game, join the server, and then type `/start` in the chat and `WAIT` for bot to respond.
-In order to stop the bot type `/stop` in the chat, `bot_stop` in console, or close the app.
+In order to stop the bot type `/stop` in the chat, `stop_bot` in console, or close the app.
 
 ## Will I get banned
 
